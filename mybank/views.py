@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from  .forms import UserRegistrationForm
+from .forms import UserRegistrationForm,LoginForm
 from .models import CustomUser
 from django.views.generic import TemplateView
 
@@ -27,3 +27,11 @@ class Registration(TemplateView):
 
 
 #LOGIN
+class LoginView(TemplateView):
+    model=CustomUser
+    template_name = "login.html"
+    form_class=LoginForm
+    context={}
+    def get(self,request,*args,**kwargs):
+        self.context["form"]=self.form_class()
+        return render(request, self.template_name, self.context)
