@@ -16,6 +16,14 @@ class Registration(TemplateView):
     def get(self,request,*args,**kwargs):
         self.context["form"]=self.form_class()
         return render(request,self.template_name,self.context)
+    def post(self,request,*args,**kwargs):
+        form=self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request,"login.html")
+        else:
+            self.context["form"]=form
+            return render(request,self.template_name,self.context)
 
 
 #LOGIN
