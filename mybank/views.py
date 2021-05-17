@@ -1,10 +1,10 @@
 import self as self
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from .forms import UserRegistrationForm,LoginForm,AccountCreationForm
 from .models import CustomUser,Account
 from django.views.generic import TemplateView
-from  django.contrib.auth import login as djangologin
+from django.contrib.auth import login as djangologin
 
 # Create your views here.
 
@@ -46,11 +46,23 @@ class LoginView(TemplateView):
             if (user.username==username) & (user.password==password):
                 djangologin(request,user)
                 print("success")
-                return render(request, "home.html" , self.context)
+                return redirect("index")
             else:
                 print("failed")
                 return render(request, self.template_name, self.context)
 
+def index(request):
+    context={}
+    try:
+        account = Account.objects.get(user=request.user)
+        status = account.active_status
+        print(status)
+        flag = True if status == "Active" else False
+        print(flag)
+        context["flag"] = flag
+        return render(request, "home.html",context)
+    except:
+        return render(request, "home.html", context)
 
 #ACCOUNT CREATION
 class AccountCreateView(TemplateView):
@@ -62,13 +74,19 @@ class AccountCreateView(TemplateView):
         account_number=""
         account=self.model.objects.all().last()
         if account:
-            pass
+            acno=int(account.account_number.split("-")[1])+1
+            print("SBK-",acno)
+            account_number="SBK-"+str(acno)
+            print(account_number)
         else:
             account_number="SBK-1000"
-        self.context["form"]=self.form_class(initial={"account_number":account_number})
+        self.context["form"]=self.form_class(initial={"account_number":account_number,"user":request.user})
         return render(request, self.template_name, self.context)
     def post(self,request,*args,**kwargs):
         form=self.form_class(request.POST)
         if form.is_valid():
             form.save()
-            return render(request,"home.html")
+            return redirect("index")
+        else:
+            self.context["form"]=form
+            return render(request, self.template_name, self.context)

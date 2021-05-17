@@ -6,6 +6,8 @@
 </head>
 <body>
 <h1>Welcome {{request.user}}</h1>
+{% if not flag %}
 <a href="{% url 'account' %}">Create Account</a>
+{% endif %}
 </body>
 </html>

@@ -17,6 +17,8 @@ class LoginForm(forms.Form):
 
 
 class AccountCreationForm(ModelForm):
+    account_number = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
     class Meta:
         model=Account
         fields=["account_number","balance","account_type","user","active_status"]
+
