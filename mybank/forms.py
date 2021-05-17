@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import CustomUser
+from .models import CustomUser,Account
 from django import forms
 
 
@@ -14,3 +14,9 @@ class UserRegistrationForm(ModelForm):
 class LoginForm(forms.Form):
     username=forms.CharField()
     password=forms.CharField()
+
+
+class AccountCreationForm(ModelForm):
+    class Meta:
+        model=Account
+        fields=["account_number","balance","account_type","user","active_status"]

@@ -77,3 +77,23 @@ class CustomUser(AbstractUser):
     phone=models.CharField(max_length=190)
     age=models.CharField(max_length=12)
     objects = CustomUserManager()
+
+
+#Account Creation
+class Account(models.Model):
+    account_number=models.CharField(max_length=28,unique=True)
+    balance=models.FloatField()
+    types=(
+        ("Savings","Savings"),
+        ("Current", "Current"),
+        ("Credit", "Credit")
+    )
+    account_type=models.CharField(max_length=12,choices=types,default="Savings")
+    user=models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    status=(
+        ("Active","Active"),
+        ("Inactive", "Inactive")
+    )
+    active_status=models.CharField(max_length=15,choices=status,default="Inactive")
+    def __str__(self):
+        return self.account_number

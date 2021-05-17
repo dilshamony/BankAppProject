@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from .forms import UserRegistrationForm,LoginForm
-from .models import CustomUser
+from .forms import UserRegistrationForm,LoginForm,AccountCreationForm
+from .models import CustomUser,Account
 from django.views.generic import TemplateView
 from  django.contrib.auth import login as djangologin
 
@@ -49,3 +49,14 @@ class LoginView(TemplateView):
             else:
                 print("failed")
                 return render(request, self.template_name, self.context)
+
+
+#ACCOUNT CREATION
+class AccountCreateView(TemplateView):
+    model=Account
+    template_name = "createaccount.html"
+    form_class=AccountCreationForm
+    context={}
+    def get(self,request,*args,**kwargs):
+        self.context["form"]=self.form_class
+        return render(request, self.template_name, self.context)
