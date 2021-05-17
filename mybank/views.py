@@ -1,3 +1,4 @@
+import self as self
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from .forms import UserRegistrationForm,LoginForm,AccountCreationForm
@@ -58,5 +59,16 @@ class AccountCreateView(TemplateView):
     form_class=AccountCreationForm
     context={}
     def get(self,request,*args,**kwargs):
-        self.context["form"]=self.form_class
+        account_number=""
+        account=self.model.objects.all().last()
+        if account:
+            pass
+        else:
+            account_number="SBK-1000"
+        self.context["form"]=self.form_class(initial={"account_number":account_number})
         return render(request, self.template_name, self.context)
+    def post(self,request,*args,**kwargs):
+        form=self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request,"home.html")
