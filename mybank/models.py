@@ -97,3 +97,13 @@ class Account(models.Model):
     active_status=models.CharField(max_length=15,choices=status,default="Inactive")
     def __str__(self):
         return self.account_number
+
+
+class Transactions(models.Model):
+    user=models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    amount=models.FloatField()
+    to_accno=models.CharField(max_length=120)
+    date=models.DateField(auto_now=True)
+    remarks=models.CharField(max_length=120)
+    def __str__(self):
+        return self.user
