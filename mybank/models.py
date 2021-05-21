@@ -99,7 +99,7 @@ class Account(models.Model):
         return self.account_number
 
 
-class Transactions(models.Model):
+class FundTransactions(models.Model):
     user=models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     amount=models.FloatField()
     to_accno=models.CharField(max_length=120)

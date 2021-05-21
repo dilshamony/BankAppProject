@@ -6,8 +6,13 @@
 </head>
 <body>
 <h1>Welcome {{request.user}}</h1>
+
 {% if not flag %}
 <a href="{% url 'account' %}">Create Account</a>
 {% endif %}
+
+<a href="{% url 'transactions' %}">FUND TRANSFER</a>
+<a href="{% url 'balance' %}">VIEW BALANCE</a>
+<a href="{% url 'history' %}">VIEW PAYMENT HISTORY</a>
 </body>
 </html>
